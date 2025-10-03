@@ -22,7 +22,7 @@ if ($res && $res->num_rows > 0) {
     $footer = $res->fetch_assoc();
 }
 ?>
-<footer class="bg-dark text-white py-4 mt-5">
+<footer class=" py-4 mt-5" style="background-color:#2c3e50; color:white; padding:40px 0; font-family:Arial, sans-serif;">
     <div class="container">
         <div class="row">
             <div class="col-md-4 mb-3 mb-md-0">
@@ -55,5 +55,6 @@ if ($res && $res->num_rows > 0) {
             <small>&copy; <?= date('Y') ?> Modern College. All rights reserved.</small>
         </div>
     </div>
+    <!-- Footer Section -->
 </footer>
 </body>
