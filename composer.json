@@ -1,0 +1,15 @@
+{
+    "name": "prafu/bt",
+    "autoload": {
+        "psr-4": {
+            "Prafu\\Bt\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "codemaster12",
+            "email": "prafull123p@outlook.com"
+        }
+    ],
+    "require": {}
+}
