@@ -161,6 +161,18 @@ if (!isset($_SESSION['admin_id']) || !isset($_SESSION['admin_logged_in']) || !$_
           </div>
         </a>
       </div>
+        <div class="col-md-4">
+        <a href="admin_quote.php" class="text-decoration-none">
+          <div class="card shadow-sm h-100 text-center">
+            <div class="card-body">
+              <i class="bi bi-person-check-fill display-4 text-warning mb-3"></i>
+              <h5 class="card-title">Manage quote</h5>
+              <p class="card-text text-muted">Add, edit, and manage quote.</p>
+              <a href="admin_quote.php" class="btn btn-outline-warning btn-sm mt-2">View quote</a>
+            </div>
+          </div>
+        </a>
+      </div>
       <div class="col-md-4">
         <a href="admin_blog.php" class="text-decoration-none">
           <div class="card shadow-sm h-100 text-center">

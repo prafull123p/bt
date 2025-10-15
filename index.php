@@ -28,48 +28,12 @@ if ($result) {
         <!-- include 'carousel_view.php'; -->
     </section>
 
-    <!-- Founder's Desk Section -->
-    <section class="py-5 bg-white">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2>From the Founder's Desk</h2>
-                <p class="lead">Meet the visionary leaders who started it all</p>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-12 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="row g-0 align-items-center">
-                            <div class="col-md-5 text-center">
-                                <img src="img\founder\IMG-20250403-WA0016.jpg"
-                                    alt="Shashidhar Panda seated and smiling warmly in formal attire against a neutral background, conveying a welcoming and inspirational atmosphere"
-                                    class="img-fluid m-3" style="max-width: 180px;">
-                            </div>
-                            <div class="col-md-7">
-                                <div class="card-body">
-                                    <h3 class="card-title">श्री शशिधर पंडा, महापल्ली</h3>
-                                    <p class="text-muted mb-2">एम.ए. (इतिहास, भूगोल, हिंदी), बी.एड., साहित्य रत्न</p>
 
-                                    <p class="card-text mb-2">
-                                        प्रख्यात समाजसेवी, रायगढ़ ब्लॉक स्तरीय छत्तीसगढ़ शासन द्वारा ग्राम गौरव से
-                                        सम्मानित, व्यवस्थापक गायत्री शक्तिपीठ<br>
-                                        (Shri S.D. Panda)
-                                    </p>
-                                    <div class="mt-3">
-                                        <a href="#" class="me-2"><i class="fab fa-linkedin fa-lg"></i></a>
-                                        <a href="#" class="me-2"><i class="fab fa-twitter fa-lg"></i></a>
-                                        <a href="#"><i class="fas fa-envelope fa-lg"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-
+    <!-- news section -->
+    <?php
+    include('info.php')
+        ?>
+    <!-- news section end here -->
 
     <!-- Quick Facts -->
     <section class="py-5 bg-light">
@@ -115,7 +79,7 @@ if ($result) {
                     <div class="card h-100 shadow-sm">
                         <img src="assets/images/computer-science.jpg" class="card-img-top" alt="Computer Science">
                         <div class="card-body">
-                            <h5 class="card-title">Computer Science</h5>
+                            <h5 class="card-title">Computer Science Application</h5>
                             <p class="card-text">Learn cutting-edge technologies and prepare for careers in
                                 software development, AI, and more.</p>
                             <a href="academics.html" class="btn btn-outline-primary">Learn More</a>
@@ -151,7 +115,7 @@ if ($result) {
         </div>
     </section>
 
-    <!-- Campus Life -->
+    <!-- Campus Life
     <section class="py-5 bg-light">
         <div class="container">
             <div class="row align-items-center">
@@ -177,7 +141,7 @@ if ($result) {
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- Events Section -->
     <section class="py-5">
@@ -333,6 +297,46 @@ if ($result) {
             </div>
         </div>
     </section>
+    <!-- Founder's Desk Section -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>From the Founder's Desk</h2>
+                <p class="lead">Meet the visionary leaders who started it all</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-12 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-md-5 text-center">
+                                <img src="img\founder\IMG-20250403-WA0016.jpg"
+                                    alt="Shashidhar Panda seated and smiling warmly in formal attire against a neutral background, conveying a welcoming and inspirational atmosphere"
+                                    class="img-fluid m-3" style="max-width: 180px;">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card-body">
+                                    <h3 class="card-title">श्री शशिधर पंडा, महापल्ली</h3>
+                                    <p class="text-muted mb-2">एम.ए. (इतिहास, भूगोल, हिंदी), बी.एड., साहित्य रत्न</p>
+
+                                    <p class="card-text mb-2">
+                                        प्रख्यात समाजसेवी, रायगढ़ ब्लॉक स्तरीय छत्तीसगढ़ शासन द्वारा ग्राम गौरव से
+                                        सम्मानित, व्यवस्थापक गायत्री शक्तिपीठ<br>
+                                        (Shri S.D. Panda)
+                                    </p>
+                                    <div class="mt-3">
+                                        <a href="#" class="me-2"><i class="fab fa-linkedin fa-lg"></i></a>
+                                        <a href="#" class="me-2"><i class="fab fa-twitter fa-lg"></i></a>
+                                        <a href="#"><i class="fas fa-envelope fa-lg"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
     <!-- Our Staff Section -->
     <section class="py-5 bg-white">
@@ -343,14 +347,29 @@ if ($result) {
             </div>
             <div class="row g-4">
                 <?php
-                // Fetch up to 6 staff members
+                include 'db.php';
                 $staff = [];
-                $result = $conn->query("SELECT name, designation, qualification, photo FROM staff ORDER BY id ASC LIMIT 6");
-                if ($result) {
-                    while ($row = $result->fetch_assoc()) {
-                        $staff[] = $row;
+
+                // Ensure the connection is established
+                if ($conn) {
+                    // Prepare and execute the query
+                    $query = "SELECT name, designation, qualification, photo FROM staff ORDER BY id ASC LIMIT 6";
+                    $result = $conn->query($query);
+
+                    // Check if the query was successful
+                    if ($result && $result->num_rows > 0) {
+                        // Fetch each row as an associative array
+                        while ($row = $result->fetch_assoc()) {
+                            $staff[] = $row;
+                        }
+                    } else {
+                        echo "No staff records found or query failed.";
                     }
+                } else {
+                    echo "Database connection failed.";
                 }
+                //  print the result for debugging
+                //  print_r($staff);
                 ?>
                 <?php if ($staff): ?>
                     <?php foreach ($staff as $member): ?>

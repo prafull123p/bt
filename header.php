@@ -73,6 +73,36 @@
             height: 20%;
             width: 15%;
         }
+
+        .parent {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        .notis {
+            grid-column: span 2 / span 2;
+            grid-row: span 5 / span 5;
+        }
+
+        .newss {
+            grid-column: span 2 / span 2;
+            grid-row: span 3 / span 3;
+            grid-column-start: 3;
+        }
+
+        .div3{
+            grid-row: span 5 / span 5;
+            grid-column-start: 5;
+        }
+
+        .div4 {
+            grid-column: span 2 / span 2;
+            grid-row: span 2 / span 2;
+            grid-column-start: 3;
+            grid-row-start: 4;
+        }
     </style>
 </head>
 
@@ -104,9 +134,9 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="academics.php">Programs</a></li>
                             <li><a class="dropdown-item" href="#">Departments</a></li>
-                             <li class="nav-item">
-                        <a class="nav-link" href="contact.php">Contact</a>
-                    </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="contact.php">Contact</a>
+                            </li>
                             <li><a class="dropdown-item" href="#">Research</a></li>
                         </ul>
                     </li>

@@ -22,14 +22,49 @@ if ($res && $res->num_rows > 0) {
     $footer = $res->fetch_assoc();
 }
 ?>
-<footer class=" py-4 mt-5" style="background-color:#2c3e50; color:white; padding:40px 0; font-family:Arial, sans-serif;">
+<footer class=" py-4 mt-5"
+    style="background-color:#2c3e50; color:white; padding:40px 0; font-family:Arial, sans-serif;">
     <div class="container">
         <div class="row">
             <div class="col-md-4 mb-3 mb-md-0">
                 <h5 class="mb-2">Contact Us</h5>
-                <p class="mb-1"><i class="bi bi-geo-alt-fill me-2"></i><?= htmlspecialchars($footer['address']) ?></p>
-                <p class="mb-1"><i class="bi bi-telephone-fill me-2"></i><?= htmlspecialchars($footer['contact']) ?></p>
-                <p class="mb-0"><i class="bi bi-envelope-fill me-2"></i><?= htmlspecialchars($footer['email']) ?></p>
+                <p class="mb-1"><i class="bi bi-geo-alt-fill me-2"></i></p>
+                <p class="mb-1"><i class="bi bi-telephone-fill me-2"></i></p>
+                <p class="mb-0"><i class="bi bi-envelope-fill me-2"></i></p>
+            </div>
+             <div class="col-md-4 mb-3 mb-md-0">
+                <h5 class="mb-2">Useful Links</h5>
+                <li>
+                    <a href="//voterportal.eci.gov.in" target="blank" class="lcr">www.voterportal.eci.gov.in</a>
+                </li>
+                <!-- <li>
+                    <a href="//rajbhavancg.gov.in" target="blank">www.rajbhavancg.gov.in</a>
+                </li> -->
+                <li>
+                    <a href="//www.ugc.ac.in" target="blank">www.ugc.ac.in</a>
+                </li>
+                <li>
+                    <a href="//www.swayam.gov.in" target="blank">www.swayam.gov.in</a>
+                </li>
+                <!-- <li>
+                    <a href="//aishe.gov.in" target="blank">www.aishe.gov.in</a>
+                </li> -->
+                <li>
+                    <a href="//nptel.ac.in" target="blank">www.nptel.ac.in</a>
+                </li>
+                <li>
+                    <a href="//aicte-india.org" target="blank">www.aicte-india.org</a>
+                </li>
+                <!-- <li>
+                    <a href="//scert.cg.gov.in" target="blank">www.scert.cg.gov.in</a>
+                </li> -->
+                <li>
+                    <a href="http://naac.gov.in/" target="blank">www.naac.gov.in</a>
+                </li>
+                <li>
+                    <a href="//www.swayamprabha.gov.in" target="blank">www.swayamprabha.gov.in</a>
+                </li>
+
             </div>
             <div class="col-md-4 mb-3 mb-md-0">
                 <h5 class="mb-2">Quick Links</h5>
@@ -44,7 +79,8 @@ if ($res && $res->num_rows > 0) {
                 <h5 class="mb-2">Find Us</h5>
                 <?php if (!empty($footer['map'])): ?>
                     <div class="ratio ratio-4x3">
-                        <?= $footer['map'] ?>
+                        <?= $footer['map']; ?>
+                        
                     </div>
                 <?php else: ?>
                     <p class="text-muted">Map not available.</p>
