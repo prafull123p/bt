@@ -52,7 +52,7 @@ if ($res && $res->num_rows > 0) {
             </div>
         </div>
         <div class="text-center pt-3 mt-3 border-top border-secondary">
-            <small>&copy; <?= date('Y') ?> Modern College. All rights reserved.</small>
+            <small>&copy; <?= date('Y') ?> BT.</small>
         </div>
     </div>
     <!-- Footer Section -->
