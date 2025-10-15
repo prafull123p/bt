@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>
 
-</title>
+<head>
+    <title>
+
+    </title>
     <style>
         .hero {
             background: linear-gradient(rgba(0, 0, 0, 0.84), rgba(0, 0, 0, 0.5)), url('YOUR-BACKGROUND.JPG') center/cover no-repeat;
             /* background-image: url('vasily-koloda-8CqDvPuo_kI-unsplash.jpg');  */
-        
+
             height: 100vh;
             color: #fff;
             display: flex;
@@ -16,6 +17,7 @@
             justify-content: center;
             text-align: center;
         }
+
         .hero-content {
             max-width: 800px;
             animation: fadein 2s ease-in-out;
@@ -56,17 +58,64 @@
                 transform: translateY(0);
             }
         }
-    
+
+        .marq {
+
+            --bs-blue: #0d6efd;
+            --bs-indigo: #6610f2;
+            --bs-purple: #6f42c1;
+            --bs-pink: #d63384;
+            --bs-red: #dc3545;
+            --bs-orange: #fd7e14;
+            --bs-yellow: #ffc107;
+            --bs-green: #198754;
+            --bs-teal: #20c997;
+            --bs-cyan: #0dcaf0;
+            --bs-white: #fff;
+            --bs-gray: #6c757d;
+            --bs-gray-dark: #343a40;
+            --bs-primary: #0d6efd;
+            --bs-secondary: #6c757d;
+            --bs-success: #198754;
+            --bs-info: #0dcaf0;
+            --bs-warning: #ffc107;
+            --bs-danger: #dc3545;
+            --bs-light: #f8f9fa;
+            --bs-dark: #212529;
+            --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+            font-weight: 400;
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Lato', sans-serif;
+            display: inline-block;
+            overflow: hidden;
+            text-align: initial;
+            white-space: nowrap;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: white;
+            padding: 0px 8px 8px 8px;
+            background: linear-gradient(87deg, rgba(18, 18, 78, 1) 0%, rgba(97, 36, 182, 1) 20%, rgba(58, 58, 154, 1) 46%, rgba(47, 88, 198, 1) 72%, rgba(25, 25, 201, 1) 99%);
+            background-size: 400% 400%;
+            animation: gradient 10s ease infinite;
+            background-position-x: 78.6361%;
+            background-position-y: 50%;
+        }
     </STYLE>
 </head>
 
 <body>
-   <section class="hero">
-  <div class="hero-content">
-    <h1>Welcome to Batmul College</h1>
-    <p>Empowering minds, enriching communities — a non-profit institution dedicated to accessible, quality education for all.</p>
-    <a href="about.php" class="cta-btn">Discover Our Mission</a>
-  </div>
-</section>
+       <section class="hero" style="margin: 0%; padding-top: 0;">
+
+        <div class="hero-content">
+            <h1>Welcome to Batmul College</h1>
+            <p>Empowering minds, enriching communities — a non-profit institution dedicated to accessible, quality
+                education for all.</p>
+            <a href="about.php" class="cta-btn">Discover Our Mission</a>
+        </div>
+    </section>
 
 </body><!-- hero.php -->

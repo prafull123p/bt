@@ -1,13 +1,6 @@
 <?php include('header.php'); ?>
 <?php include 'db.php'; ?>
 
-
-
-
-
-
-
-
 <?php
 // Fetch latest 3 blog posts
 $blog_posts = [];
@@ -21,9 +14,9 @@ if ($result) {
 
 
 <!-- Page content will go here -->
-<main style="margin: 10px;  ">
+<main style="margin:0px;  ">
     <!-- Hero Section -->
-    <section class="hero-section bg-primary text-white py-5">
+    <section class="hero-section bg-primary text-white py-5" style="margin: 0; padding: 0;">
         <?php include 'hero.php'; ?>
         <!-- include 'carousel_view.php'; -->
     </section>
