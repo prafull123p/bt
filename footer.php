@@ -77,14 +77,11 @@ if ($res && $res->num_rows > 0) {
             </div>
             <div class="col-md-4">
                 <h5 class="mb-2">Find Us</h5>
-                <?php if (!empty($footer['map'])): ?>
+                
                     <div class="ratio ratio-4x3">
-                        <?= $footer['map']; ?>
-                        
+                        <
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3626.8064822952724!2d83.49198218516382!3d21.85702181447777!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a272e905a6570c5%3A0x6c2c5805b3d17844!2sbatmul%20college!5e0!3m2!1sen!2sin!4v1760674964296!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
-                <?php else: ?>
-                    <p class="text-muted">Map not available.</p>
-                <?php endif; ?>
             </div>
         </div>
         <div class="text-center pt-3 mt-3 border-top border-secondary">

@@ -104,11 +104,21 @@
             background-position-x: 78.6361%;
             background-position-y: 50%;
         }
+
+        .polyg {
+            .box {
+                --mask:
+                    radial-gradient(100.62px at 50% calc(100% - 135px), #000 99%, #0000 101%) calc(50% - 90px) 0/180px 100%,
+                    radial-gradient(100.62px at 50% calc(100% + 90px), #0000 99%, #000 101%) 50% calc(100% - 45px)/180px 100% repeat-x;
+                -webkit-mask: var(--mask);
+                mask: var(--mask);
+            }
+        }
     </STYLE>
 </head>
 
 <body>
-       <section class="hero" style="margin: 0%; padding-top: 0;">
+    <section class="hero">
 
         <div class="hero-content">
             <h1>Welcome to Batmul College</h1>

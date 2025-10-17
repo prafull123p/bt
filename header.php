@@ -92,7 +92,7 @@
             grid-column-start: 3;
         }
 
-        .div3{
+        .div3 {
             grid-row: span 5 / span 5;
             grid-column-start: 5;
         }
@@ -102,6 +102,27 @@
             grid-row: span 2 / span 2;
             grid-column-start: 3;
             grid-row-start: 4;
+        }
+
+        .polyg {
+            --mask:
+                radial-gradient(100.62px at 50% calc(100% - 135px), #000 99%, #0000 101%) calc(50% - 90px) 0/180px 100%,
+                radial-gradient(100.62px at 50% calc(100% + 90px), #0000 99%, #000 101%) 50% calc(100% - 45px)/180px 100% repeat-x;
+            -webkit-mask: var(--mask);
+            mask: var(--mask);
+        }
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
     </style>
 </head>
@@ -134,9 +155,8 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="academics.php">Programs</a></li>
                             <li><a class="dropdown-item" href="#">Departments</a></li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="contact.php">Contact</a>
-                            </li>
+                            <li>
+                            <a href="" class="dropdown-item">staff</a>
                             <li><a class="dropdown-item" href="#">Research</a></li>
                         </ul>
                     </li>

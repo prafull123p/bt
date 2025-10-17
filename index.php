@@ -14,9 +14,9 @@ if ($result) {
 
 
 <!-- Page content will go here -->
-<main style="margin:0px;  ">
+<main style="margin:0px; padding:0px; " class="">
     <!-- Hero Section -->
-    <section class="hero-section bg-primary text-white py-5" style="margin: 0; padding: 0;">
+    <section class="hero-section bg-primary text-white py-5 polyg" style="margin: 0; padding: 0;">
         <?php include 'hero.php'; ?>
         <!-- include 'carousel_view.php'; -->
     </section>
@@ -256,7 +256,30 @@ if ($result) {
     </section>
 
     <!-- Blog Section -->
+    <!-- /* HTML: <div class="ribbon">Your text content</div> */
+.ribbon {
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+}
+.ribbon {
+  --f: .5em; /* control the folded part */
+  
+  position: absolute;
+  top: 0;
+  right: 0;
+  line-height: 1.8;
+  padding-inline: 1lh;
+  padding-bottom: var(--f);
+  border-image: conic-gradient(#0008 0 0) 51%/var(--f);
+  clip-path: polygon(
+    100% calc(100% - var(--f)),100% 100%,calc(100% - var(--f)) calc(100% - var(--f)),var(--f) calc(100% - var(--f)), 0 100%,0 calc(100% - var(--f)),999px calc(100% - var(--f) - 999px),calc(100% - 999px) calc(100% - var(--f) - 999px));
+  transform: translate(calc((1 - cos(45deg))*100%), -100%) rotate(45deg);
+  transform-origin: 0% 100%;
+  background-color: #BD1550; /* the main color  */
+} -->
     <section class="py-5 bg-light">
+
         <div class="container">
             <div class="text-center mb-5">
                 <h2>Latest Blog Posts</h2>
@@ -265,19 +288,25 @@ if ($result) {
             <div class="row g-4">
                 <?php if ($blog_posts): ?>
                     <?php foreach ($blog_posts as $post): ?>
+
                         <div class="col-md-4">
                             <div class="card h-100 shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title"><?= htmlspecialchars($post['title']) ?></h5>
                                     <p class="card-text">
                                         <?= nl2br(htmlspecialchars(mb_strimwidth($post['content'], 0, 120, '...'))) ?>
+                                    
                                     </p>
+
                                 </div>
                                 <div class="card-footer bg-white border-0">
                                     <small class="text-muted"><?= date('F j, Y', strtotime($post['created_at'])) ?></small>
                                 </div>
+                                
                             </div>
+
                         </div>
+
                     <?php endforeach; ?>
                 <?php else: ?>
                     <div class="col-12">
@@ -285,6 +314,7 @@ if ($result) {
                     </div>
                 <?php endif; ?>
             </div>
+
             <div class="text-center mt-4">
                 <a href="admin_blog.php" class="btn btn-primary">View All Blog Posts</a>
             </div>
@@ -293,6 +323,7 @@ if ($result) {
     <!-- Founder's Desk Section -->
     <section class="py-5 bg-white">
         <div class="container">
+            
             <div class="text-center mb-5">
                 <h2>From the Founder's Desk</h2>
                 <p class="lead">Meet the visionary leaders who started it all</p>
@@ -307,6 +338,7 @@ if ($result) {
                                     class="img-fluid m-3" style="max-width: 180px;">
                             </div>
                             <div class="col-md-7">
+                                
                                 <div class="card-body">
                                     <h3 class="card-title">श्री शशिधर पंडा, महापल्ली</h3>
                                     <p class="text-muted mb-2">एम.ए. (इतिहास, भूगोल, हिंदी), बी.एड., साहित्य रत्न</p>
