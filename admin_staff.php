@@ -1,6 +1,7 @@
 <?php
 include 'auth.php';
 include 'db.php';
+include_once __DIR__ . '/includes/csrf.php';
 
 $message = '';
 $edit_mode = false;
@@ -64,21 +65,74 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
-// DELETE
-if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
-    $delete_id = intval($_GET['delete']);
+// DELETE (via POST + CSRF)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+  if (!verify_csrf($_POST['_csrf'] ?? '')) {
+    die('Invalid CSRF token');
+  }
+  $delete_id = intval($_POST['delete_id']);
+  if ($delete_id) {
     // Optionally delete the photo file from server
     $img_res = $conn->query("SELECT photo FROM staff WHERE id=$delete_id");
     if ($img_res && $img_row = $img_res->fetch_assoc()) {
-        if (!empty($img_row['photo']) && file_exists($img_row['photo'])) {
-            unlink($img_row['photo']);
-        }
+      if (!empty($img_row['photo']) && file_exists($img_row['photo'])) {
+        @unlink($img_row['photo']);
+      }
     }
     $stmt = $conn->prepare("DELETE FROM staff WHERE id=?");
     $stmt->bind_param("i", $delete_id);
     $stmt->execute();
     $stmt->close();
     $message = "Staff member deleted.";
+  }
+}
+
+// Set role (make founder/principal)
+// Handle role changes via POST (set/unset). Principal is unique: setting Principal will unset others.
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_role'])) {
+  $change = $_POST['change_role']; // expected 'set' or 'unset'
+  if (!verify_csrf($_POST['_csrf'] ?? '')) {
+    die('Invalid CSRF token');
+  }
+  $role = trim($_POST['role'] ?? '');
+  $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+  if ($id && in_array(strtolower($role), ['founder','principal','staff',''])) {
+    // Normalize role names
+    $roleNormalized = '';
+    if (strtolower($role) === 'founder') $roleNormalized = 'Founder';
+    elseif (strtolower($role) === 'principal') $roleNormalized = 'Principal';
+    elseif (strtolower($role) === 'staff' || $role === '') $roleNormalized = 'Staff';
+
+    if ($change === 'set') {
+      // If setting Principal, unset other Principals first so Principal remains unique
+      if ($roleNormalized === 'Principal') {
+        $conn->query("UPDATE staff SET designation = 'Staff' WHERE designation = 'Principal'");
+      }
+      $stmt = $conn->prepare("UPDATE staff SET designation = ? WHERE id = ?");
+      $stmt->bind_param("si", $roleNormalized, $id);
+      if ($stmt->execute()) {
+        $message = "Role updated to $roleNormalized.";
+      } else {
+        $message = "Failed to update role.";
+      }
+      $stmt->close();
+    } elseif ($change === 'unset') {
+      $unsetRole = 'Staff';
+      $stmt = $conn->prepare("UPDATE staff SET designation = ? WHERE id = ?");
+      $stmt->bind_param("si", $unsetRole, $id);
+      if ($stmt->execute()) {
+        $message = "Role unset (now Staff).";
+      } else {
+        $message = "Failed to unset role.";
+      }
+      $stmt->close();
+    }
+  } else {
+    $message = 'Invalid role change request.';
+  }
+  // redirect to avoid resubmission
+  header('Location: admin_staff.php');
+  exit;
 }
 
 // EDIT (fetch data)
@@ -175,7 +229,14 @@ if ($result) {
               <td>
                 <a href="admin_staff.php?view=<?= $member['id'] ?>" class="btn btn-sm btn-info">View</a>
                 <a href="admin_staff.php?edit=<?= $member['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                <a href="admin_staff.php?delete=<?= $member['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this staff member?')">Delete</a>
+                <form method="POST" style="display:inline-block;margin:0 0 0 .25rem;">
+                  <?php echo csrf_field(); ?>
+                  <input type="hidden" name="delete_id" value="<?= $member['id'] ?>">
+                  <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this staff member?')">Delete</button>
+                </form>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-role-action="set" data-role="founder" data-id="<?= $member['id'] ?>" data-name="<?= htmlspecialchars($member['name'], ENT_QUOTES) ?>">Make Founder</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-role-action="set" data-role="principal" data-id="<?= $member['id'] ?>" data-name="<?= htmlspecialchars($member['name'], ENT_QUOTES) ?>">Make Principal</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-role-action="unset" data-id="<?= $member['id'] ?>" data-name="<?= htmlspecialchars($member['name'], ENT_QUOTES) ?>">Unset Role</button>
               </td>
             </tr>
           <?php endforeach; ?>
@@ -236,5 +297,70 @@ if ($result) {
       $stmt->close();
   }
   ?>
+  
+  <!-- Role change confirmation modal (single reusable template) -->
+  <div class="modal fade" id="roleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form method="POST" id="roleForm">
+          <?php echo csrf_field(); ?>
+          <input type="hidden" name="change_role" value="">
+          <input type="hidden" name="role" value="">
+          <input type="hidden" name="id" value="">
+          <div class="modal-header">
+            <h5 class="modal-title" id="roleModalLabel">Confirm Role Change</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p id="roleModalBody">Are you sure?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="roleModalConfirm">Confirm</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS (for modal) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function(){
+      const roleModalEl = document.getElementById('roleModal');
+      const roleForm = document.getElementById('roleForm');
+      const roleModalBody = document.getElementById('roleModalBody');
+      const inputChangeRole = roleForm.querySelector('input[name="change_role"]');
+      const inputRole = roleForm.querySelector('input[name="role"]');
+      const inputId = roleForm.querySelector('input[name="id"]');
+      let bsModal = null;
+      // Initialize bootstrap modal when needed
+      function initModal(){
+        if (!bsModal) bsModal = new bootstrap.Modal(roleModalEl);
+      }
+
+      document.querySelectorAll('button[data-role-action]').forEach(btn=>{
+        btn.addEventListener('click', function(e){
+          initModal();
+          const action = this.getAttribute('data-role-action');
+          const role = this.getAttribute('data-role') || '';
+          const id = this.getAttribute('data-id');
+          const name = this.getAttribute('data-name') || 'this staff member';
+          if (action === 'set') {
+            roleModalBody.textContent = `Set ${name} as ${role.charAt(0).toUpperCase()+role.slice(1)}?` + (role==='principal' ? ' This will unset any existing Principal.' : '');
+            inputChangeRole.value = 'set';
+            inputRole.value = role;
+            inputId.value = id;
+          } else if (action === 'unset') {
+            roleModalBody.textContent = `Unset role for ${name}? They will become 'Staff'.`;
+            inputChangeRole.value = 'unset';
+            inputRole.value = '';
+            inputId.value = id;
+          }
+          bsModal.show();
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

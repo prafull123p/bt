@@ -1,30 +1,54 @@
 <?php
- include_once 'db.php';
+include_once 'db.php';
+include_once __DIR__ . '/includes/csrf.php';
 
-
-// Handle Add
-if (isset($_POST['add'])) {
-    $quote = $_POST['quote'];
-    $author = $_POST['author'];
-    $conn->query("INSERT INTO quotes (quote, author) VALUES ('$quote', '$author')");
+// Handle Add (POST)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add'])) {
+  if (!verify_csrf($_POST['_csrf'] ?? '')) {
+    die('Invalid CSRF token');
+  }
+  $quote = trim($_POST['quote'] ?? '');
+  $author = trim($_POST['author'] ?? '');
+  if ($quote && $author) {
+    $stmt = $conn->prepare("INSERT INTO quotes (quote, author) VALUES (?, ?)");
+    $stmt->bind_param('ss', $quote, $author);
+    $stmt->execute();
+    $stmt->close();
+  }
 }
 
-// Handle Edit
-if (isset($_POST['edit'])) {
-    $id = $_POST['id'];
-    $quote = $_POST['quote'];
-    $author = $_POST['author'];
-    $conn->query("UPDATE quotes SET quote='$quote', author='$author' WHERE id=$id");
+// Handle Edit (POST)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit'])) {
+  if (!verify_csrf($_POST['_csrf'] ?? '')) {
+    die('Invalid CSRF token');
+  }
+  $id = intval($_POST['id'] ?? 0);
+  $quote = trim($_POST['quote'] ?? '');
+  $author = trim($_POST['author'] ?? '');
+  if ($id && $quote && $author) {
+    $stmt = $conn->prepare("UPDATE quotes SET quote = ?, author = ? WHERE id = ?");
+    $stmt->bind_param('ssi', $quote, $author, $id);
+    $stmt->execute();
+    $stmt->close();
+  }
 }
 
-// Handle Delete
-if (isset($_GET['delete'])) {
-    $id = $_GET['delete'];
-    $conn->query("DELETE FROM quotes WHERE id=$id");
+// Handle Delete (POST)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_quote'])) {
+  if (!verify_csrf($_POST['_csrf'] ?? '')) {
+    die('Invalid CSRF token');
+  }
+  $id = intval($_POST['delete_id'] ?? 0);
+  if ($id) {
+    $stmt = $conn->prepare("DELETE FROM quotes WHERE id = ?");
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $stmt->close();
+  }
 }
 
 // Fetch all quotes
-$result = $conn->query("SELECT * FROM quotes");
+$result = $conn->query("SELECT * FROM quotes ORDER BY id DESC");
 ?>
 
 <!DOCTYPE html>
@@ -38,6 +62,7 @@ $result = $conn->query("SELECT * FROM quotes");
 
   <h2>Add New Quote</h2>
   <form method="POST" class="mb-4">
+    <?php echo csrf_field(); ?>
     <div class="mb-2">
       <textarea name="quote" class="form-control" placeholder="Quote" required></textarea>
     </div>
@@ -60,6 +85,7 @@ $result = $conn->query("SELECT * FROM quotes");
       <?php while ($row = $result->fetch_assoc()) { ?>
         <tr>
           <form method="POST">
+            <?php echo csrf_field(); ?>
             <td>
               <textarea name="quote" class="form-control"><?php echo htmlspecialchars($row['quote']); ?></textarea>
             </td>
@@ -69,9 +95,13 @@ $result = $conn->query("SELECT * FROM quotes");
             <td>
               <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
               <button type="submit" name="edit" class="btn btn-success btn-sm">Save</button>
-              <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Delete this quote?')">Delete</a>
-            </td>
           </form>
+              <form method="POST" style="display:inline-block;margin-left:.5rem;">
+                <?php echo csrf_field(); ?>
+                <input type="hidden" name="delete_id" value="<?php echo $row['id']; ?>">
+                <button type="submit" name="delete_quote" class="btn btn-danger btn-sm" onclick="return confirm('Delete this quote?')">Delete</button>
+              </form>
+            </td>
         </tr>
       <?php } ?>
     </tbody>

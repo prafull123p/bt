@@ -51,12 +51,12 @@ $edit_total = 0;
 $edit_paid = 0;
 $edit_due = 0;
 
-// Handle Delete
-if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
-    if (!isset($_GET['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_GET['csrf_token'])) {
+// Handle Delete via POST (CSRF-protected)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
         die('<div class="alert alert-danger m-5">Invalid CSRF token.</div>');
     }
-    $delete_id = intval($_GET['delete']);
+    $delete_id = intval($_POST['delete_id']);
     $stmt = $conn->prepare("DELETE FROM fees WHERE id=?");
     $stmt->bind_param("i", $delete_id);
     $stmt->execute();
@@ -391,7 +391,11 @@ if (isset($_GET['receipt']) && !empty($_GET['receipt'])) {
                                     <?php if ($fee['due_fee'] > 0): ?>
                                         <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#payModal<?= $fee['id'] ?>">Pay</button>
                                     <?php endif; ?>
-                                    <a href="?delete=<?= $fee['id'] ?>&csrf_token=<?= htmlspecialchars($csrf_token) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this fee record?')">Delete</a>
+                                    <form method="POST" style="display:inline-block;margin:0 0 0 .5rem;">
+                                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
+                                        <input type="hidden" name="delete_id" value="<?= $fee['id'] ?>">
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this fee record?')">Delete</button>
+                                    </form>
 
                                     <!-- Payment Modal -->
                                     <?php if ($fee['due_fee'] > 0): ?>

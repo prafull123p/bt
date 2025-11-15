@@ -2,6 +2,7 @@
 
 include('auth.php');
 include 'db.php';
+include_once __DIR__ . '/includes/csrf.php';
 
 // CRUD Logic
 $message = '';
@@ -64,14 +65,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// DELETE
-if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
-    $delete_id = intval($_GET['delete']);
+// DELETE via POST (CSRF protected)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+    if (!verify_csrf($_POST['_csrf'] ?? '')) { die('Invalid CSRF token'); }
+    $delete_id = intval($_POST['delete_id']);
     // Optionally delete the image file from server
     $img_res = $conn->query("SELECT image FROM blog_posts WHERE id=$delete_id");
     if ($img_res && $img_row = $img_res->fetch_assoc()) {
         if (!empty($img_row['image']) && file_exists($img_row['image'])) {
-            unlink($img_row['image']);
+            @unlink($img_row['image']);
         }
     }
     $stmt = $conn->prepare("DELETE FROM blog_posts WHERE id=?");
@@ -179,7 +181,11 @@ if ($result) {
                                             <td><?= htmlspecialchars($post['created_at']) ?></td>
                                             <td>
                                                 <a href="admin_blog.php?edit=<?= $post['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                                                <a href="admin_blog.php?delete=<?= $post['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this blog post?')">Delete</a>
+                                                <form method="POST" style="display:inline-block;margin:0 0 0 .5rem;">
+                                                    <?php echo csrf_field(); ?>
+                                                    <input type="hidden" name="delete_id" value="<?= $post['id'] ?>">
+                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this blog post?')">Delete</button>
+                                                </form>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

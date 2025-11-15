@@ -1,0 +1,128 @@
+.lcr{
+      a {
+      color: green;
+    }
+
+}
+/* HTML: <div class="ribbon">Your text content</div> */
+.ribbon {
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+}
+.ribbon {
+  --f: .5em; /* control the folded part */
+  
+  position: absolute;
+  top: 0;
+  right: 0;
+  line-height: 1.8;
+  padding-inline: 1lh;
+  padding-bottom: var(--f);
+  border-image: conic-gradient(#0008 0 0) 51%/var(--f);
+  clip-path: polygon(
+    100% calc(100% - var(--f)),100% 100%,calc(100% - var(--f)) calc(100% - var(--f)),var(--f) calc(100% - var(--f)), 0 100%,0 calc(100% - var(--f)),999px calc(100% - var(--f) - 999px),calc(100% - 999px) calc(100% - var(--f) - 999px));
+  transform: translate(calc((1 - cos(45deg))*100%), -100%) rotate(45deg);
+  transform-origin: 0% 100%;
+  background-color: #BD1550; /* the main color  */
+}
+/* HTML: <div class="ribbon">Your text content</div> */
+.ribbon {
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+}
+.ribbon {
+  --f: .5em; /* control the folded part */
+  
+  position: absolute;
+  top: 0;
+  left: 0;
+  line-height: 1.8;
+  padding-inline: 1lh;
+  padding-bottom: var(--f);
+  border-image: conic-gradient(#0008 0 0) 51%/var(--f);
+  clip-path: polygon(
+    100% calc(100% - var(--f)),100% 100%,calc(100% - var(--f)) calc(100% - var(--f)),var(--f) calc(100% - var(--f)), 0 100%,0 calc(100% - var(--f)),999px calc(100% - var(--f) - 999px),calc(100% - 999px) calc(100% - var(--f) - 999px));
+  transform: translate(calc((cos(45deg) - 1)*100%), -100%) rotate(-45deg);
+  transform-origin: 100% 100%;
+  background-color: #F07818; /* the main color  */
+}/* HTML: <div class="ribbon">Your text content</div> */
+.ribbon {
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+}
+.ribbon {
+  --f: .5em; /* control the folded part*/
+  --r: .8em; /* control the ribbon shape */
+  
+  position: absolute;
+  left: 20px;
+  top: calc(-1*var(--f));
+  padding: .2em;
+  background: #BF4D28;
+  border-left: var(--f) solid #0005;
+  border-bottom: var(--r) solid #0000;
+  clip-path: polygon(var(--f) 0,100% 0,100% calc(100% - var(--r)),calc(50% + var(--f)/2) 100%, var(--f) calc(100% - var(--r)),var(--f) var(--f),0 var(--f));
+}
+.hero{
+  position: relative;
+  overflow: hidden;
+  background-color: red;
+}
+
+/* Quotes (moved from landing.php) */
+.quote-3d-wrapper{perspective:900px;margin-top:12px}
+.quote-scene{width:760px;max-width:95%;height:220px;position:relative}
+.quote-card{position:relative;border-radius:14px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;transition:transform .6s cubic-bezier(.2,.9,.2,1),opacity .45s;box-shadow:0 18px 50px rgba(10,10,30,0.12);background:linear-gradient(135deg,#fff,#f3f8ff);padding:24px;opacity:1}
+.quote-inner{max-width:680px;text-align:center}
+.quote-text{font-size:1.25rem;font-style:italic;color:#0f1724}
+.quote-author{margin-top:12px;font-weight:700;color:#0d6efd}
+@media (max-width:576px){.quote-scene{height:180px}.quote-text{font-size:1rem}}
+
+/* small visual polish for carousel controls on quotes */
+.carousel-control-prev, .carousel-control-next{width:56px}
+.carousel-indicators [data-bs-target]{width:10px;height:10px;border-radius:50%}
+
+/* Quote 3D visuals */
+.carousel-item { display: flex; align-items: center; justify-content: center; }
+.quote-3d-wrapper{perspective:1200px}
+.quote-scene{width:760px;max-width:95%;height:220px;position:relative;transform-style:preserve-3d;transition:transform .35s ease}
+.quote-card{position:relative;border-radius:14px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;transition:transform .6s cubic-bezier(.2,.9,.2,1),box-shadow .35s,opacity .35s;box-shadow:0 18px 50px rgba(10,10,30,0.08);background:linear-gradient(135deg,#fff,#f3f8ff);padding:28px;transform: translateZ(40px) rotateX(0deg) rotateY(0deg)}
+.carousel-item:not(.active) .quote-card{transform: translateZ(-80px) scale(.96);opacity:.85}
+.quote-card:hover{box-shadow:0 36px 80px rgba(10,10,30,0.14);transform: translateZ(60px) scale(1.01)}
+
+/* Larger, visible prev/next overlays */
+.carousel-control-prev, .carousel-control-next{width:64px;height:64px;background:rgba(0,0,0,0.06);border-radius:50%;display:flex;align-items:center;justify-content:center;top:50%;transform:translateY(-50%);opacity:0.95}
+.carousel-control-prev:hover, .carousel-control-next:hover{background:rgba(0,0,0,0.12)}
+.carousel-control-prev-icon, .carousel-control-next-icon{filter:drop-shadow(0 2px 6px rgba(0,0,0,0.2))}
+
+@media (max-width:576px){
+  .quote-scene{height:180px}
+  .carousel-control-prev, .carousel-control-next{width:48px;height:48px}
+}
+
+/* Marquee 3D banner */
+.marquee-3d{perspective:800px;padding:12px 0;background:linear-gradient(180deg,#fff,#fbfdff);overflow:hidden}
+.marquee-shell{max-width:1200px;margin:0 auto;position:relative}
+.marquee-panel{background:linear-gradient(90deg, rgba(13,110,253,0.06), rgba(111,66,193,0.03));border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:12px;transform-style:preserve-3d}
+.marquee-track{overflow:hidden;flex:1}
+.marquee-items{display:inline-block;white-space:nowrap;will-change:transform;animation:marqueeAnim 18s linear infinite}
+.marquee-item{display:inline-block;padding:0 26px;color:#0b1220;font-weight:600}
+.marquee-type{font-weight:700;color:#0d6efd;margin-right:6px}
+.marquee-item small{display:block;font-weight:400;color:#475569;font-size:.85rem}
+
+@keyframes marqueeAnim{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+
+.marquee-panel:hover .marquee-items{animation-play-state:paused}
+
+/* subtle 3d tilt for marquee */
+.marquee-shell{transition:transform .25s ease-out}
+
+@media (max-width:768px){
+  .marquee-item{padding:0 12px}
+}

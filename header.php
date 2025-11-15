@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Custom CSS -->
-    <link href="css\style.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
     <style>
         .founder-section {
             background-color: #f8f9fa;
@@ -162,6 +162,15 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="admission.php">Admissions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="landing.php#founder">Founder's Desk</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="landing.php#principal">Principal's Desk</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="landing.php#staff">Staff</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="campus_life.php">Campus Life</a>

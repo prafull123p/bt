@@ -1,6 +1,7 @@
 <?php
 include 'auth.php'; // Ensure user is authenticated
 include 'db.php';
+include_once __DIR__ . '/includes/csrf.php';
 
 $message = '';
 $edit_mode = false;
@@ -60,21 +61,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
-// DELETE
-if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
-    $delete_id = intval($_GET['delete']);
-    // Optionally delete the image file from server
-    $img_res = $conn->query("SELECT image_path FROM carousel WHERE id=$delete_id");
-    if ($img_res && $img_row = $img_res->fetch_assoc()) {
-        if (!empty($img_row['image_path']) && file_exists($img_row['image_path'])) {
-            unlink($img_row['image_path']);
-        }
+// DELETE via POST (CSRF-protected)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+  if (!verify_csrf($_POST['_csrf'] ?? '')) { die('Invalid CSRF token'); }
+  $delete_id = intval($_POST['delete_id']);
+  // Optionally delete the image file from server
+  $img_res = $conn->query("SELECT image_path FROM carousel WHERE id=$delete_id");
+  if ($img_res && $img_row = $img_res->fetch_assoc()) {
+    if (!empty($img_row['image_path']) && file_exists($img_row['image_path'])) {
+      @unlink($img_row['image_path']);
     }
-    $stmt = $conn->prepare("DELETE FROM carousel WHERE id=?");
-    $stmt->bind_param("i", $delete_id);
-    $stmt->execute();
-    $stmt->close();
-    $message = "Slide deleted.";
+  }
+  $stmt = $conn->prepare("DELETE FROM carousel WHERE id=?");
+  $stmt->bind_param("i", $delete_id);
+  $stmt->execute();
+  $stmt->close();
+  $message = "Slide deleted.";
 }
 
 // EDIT (fetch data)
@@ -158,7 +160,11 @@ if ($result) {
               <td><?= htmlspecialchars($slide['caption']) ?></td>
               <td>
                 <a href="addimgfor_slide.php?edit=<?= $slide['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                <a href="addimgfor_slide.php?delete=<?= $slide['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this slide?')">Delete</a>
+        <form method="POST" style="display:inline-block;margin:0 0 0 .5rem;">
+          <?php echo csrf_field(); ?>
+          <input type="hidden" name="delete_id" value="<?= $slide['id'] ?>">
+          <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this slide?')">Delete</button>
+        </form>
               </td>
             </tr>
           <?php endforeach; ?>

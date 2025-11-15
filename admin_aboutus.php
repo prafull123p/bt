@@ -1,6 +1,7 @@
 <?php
 include 'auth.php';
 include 'db.php';
+include_once __DIR__ . '/includes/csrf.php';
 
 $message = '';
 $edit_mode = false;
@@ -176,7 +177,11 @@ if ($result) {
                                             </td>
                                             <td>
                                                 <a href="admin_aboutus.php?edit=<?= $entry['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                                                <a href="admin_aboutus.php?delete=<?= $entry['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this entry?')">Delete</a>
+                                                <form method="POST" style="display:inline-block;margin:0 0 0 .5rem;">
+                                                    <?php echo csrf_field(); ?>
+                                                    <input type="hidden" name="delete_id" value="<?= $entry['id'] ?>">
+                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this entry?')">Delete</button>
+                                                </form>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
